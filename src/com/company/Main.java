@@ -1,6 +1,7 @@
 package com.company;
 
 import categories.BaseCategory;
+import categories.DovizCategory;
 import categories.TemizlikCategory;
 import categories.YiyecekCategory;
 import products.BaseProduct;
@@ -9,18 +10,28 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Main {
+public class Main implements DovizCategory.AltinListener {
+    List<BaseCategory> categories = new ArrayList<>();
 
     public static void main(String[] args) {
 	// write your code here
-        showMain();
+
+        Main m = new Main();
+        m.setCategory();
+        m.showMain();
+
     }
 
-    public static void showMain() {
+    public void setCategory() {
 
-        List<BaseCategory> categories = new ArrayList<>();
         categories.add(new YiyecekCategory());
         categories.add(new TemizlikCategory());
+        DovizCategory dovizCategory = new DovizCategory(this);
+        categories.add(dovizCategory);
+    }
+
+    public void showMain() {
+
 
         System.out.println("Kategori seçiniz: (çıkmak için -1 e basınız)");
         for (int i = 0;i < categories.size(); i++) {
@@ -61,5 +72,10 @@ public class Main {
             }
         }
 
+    }
+
+    @Override
+    public void altinChanged(double price) {
+        System.out.println("----Fiyat guncellemesi: Altin: " + price);
     }
 }
